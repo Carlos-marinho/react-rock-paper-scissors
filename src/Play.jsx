@@ -1,21 +1,19 @@
 import React from 'react';
+import OptionComponent from './OptionComponent';
 
-const Play = () => {
-  return ( 
-      <div className="flex flex-wrap justify-evenly border h-80 mt-2 pt-16 max-w-64 mx-auto">
-          <button>
-            <div className='flex bg-green-400 border rounded-full justify-center items-center text-center w-20 h-20 mx-5'>
-              <h5>Pedra</h5>
-            </div>
-          </button>
-          <div className='flex bg-yellow-400 border rounded-full justify-center items-center text-center w-20 h-20 mx-5'>
-            <h5>Papel</h5>
-          </div>
-          <div className='flex bg-blue-400 border rounded-full justify-center items-center text-center w-20 h-20 mx-5'>
-            <h5>Tesoura</h5>
-          </div>
-        </div>  
-    );
-}
+export default function Play({handleOptionClick}) {
+  return (
+    <div className="flex flex-wrap border justify-evenly h-80 mt-2 pt-16 max-w-80 mx-auto">
+      <button onClick={() => handleOptionClick('rock')}>
+        <OptionComponent option={'rock'}/>
+      </button>
+      <button onClick={() => handleOptionClick('paper')}>
+        <OptionComponent option={'paper'}/>
+      </button>
+      <button onClick={() => handleOptionClick('scissors')}>
+        <OptionComponent option={'scissors'}/>
+      </button>
+    </div>
 
-export default Play;
+  )
+};

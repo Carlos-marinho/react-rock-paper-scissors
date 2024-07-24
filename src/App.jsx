@@ -1,110 +1,64 @@
 import { useState } from 'react'
-// import Header from './Header'
-// import Play from './Play'
+import Header from './Header'
+import Play from './Play'
 import Game from './Game'
-
-function Header({score}) {
-  return (
-    <div className="flex justify-between py-2 px-3 w-100 border rounded-xl items-center">
-      <div>
-        <h1 className="text-2xl font-bold text-white text-left">Pedra</h1>
-        <h1 className="text-2xl font-bold text-white text-left">Papel</h1>
-        <h1 className="text-2xl font-bold text-white text-left">Tesoura</h1>
-      </div>
-
-      <div className="flex flex-col border bg-green-100 rounded-xl w-40 py-2 px-auto my-2 justify-center items-center text-center">
-        <h1 className='text-xl'>Score</h1>
-        <h2 className='text-3xl'>{score}</h2>
-        <button className='text-sm'>Adicionar Score Manualmente</button>
-      </div>
-    </div>
-  )
-};
-
-function Play({handleOptionClick}) {
-  return (
-    <div className="flex flex-wrap justify-evenly border h-80 mt-2 pt-16 max-w-64 mx-auto">
-      <button onClick={() => handleOptionClick('rock')}>
-        <div className='flex bg-green-400 border rounded-full justify-center items-center text-center w-20 h-20 mx-5'>
-          <h5>Pedra</h5>
-        </div>
-      </button>
-      <button onClick={() => handleOptionClick('paper')}>
-        <div className='flex bg-yellow-400 border rounded-full justify-center items-center text-center w-20 h-20 mx-5'>
-          <h5>Papel</h5>
-        </div>
-      </button>
-      <button onClick={() => handleOptionClick('scissors')}>
-        <OptionButton option={'scissors'}/>
-      </button>
-    </div>
-
-  )
-};
-
-function OptionButton({option}) {
-
-  return (
-    <>
-        <div className='flex bg-green-400 border rounded-full justify-center items-center text-center w-20 h-20 mx-5'>
-          <h5>{option}</h5>
-        </div>
-    </>
-  )
-};
+import OptionComponent from './OptionComponent'
 
 function App() {
   const [score, setScore] = useState(0);
-  const [showResult, setshowResult] = useState(false);
+  const [showPlay, setshowPlay] = useState(true);
   const [playerWin, setPlayerWin] = useState(null);
   const [player1, setPlayer1] = useState(null);
   const options = ['rock', 'paper', 'scissors'];
-  const [player2, setPlayer2] = useState(options[Math.floor(Math.random() * options.length)]);
+  const [player2, setPlayer2] = useState(null);
 
   function handleOptionClick(selectedOption) {
-    setPlayer1((prev) => selectedOption);
+    setPlayer1((opt) => selectedOption);
     const selectedOptionForMachine = options[Math.floor(Math.random() * options.length)];
-    setPlayer2(selectedOptionForMachine);
-    setshowResult(true);
+    setPlayer2((opt) => selectedOptionForMachine);
     Result(player1, player2);
+    setshowPlay(false);
+  };
+
+  function handlePlayAgain() {
+    setshowPlay(true);
   };
 
   function Result(player1, player2) {
     if (player1 === 'rock' && player2 === 'scissors') {
-      setPlayerWin('win');
+      setPlayerWin((prev) => 'win');
       setScore((prevScore) => prevScore + 1);
       
     } else if (player1 === 'rock' && player2 === 'paper') {
-      setPlayerWin('lose');
+      setPlayerWin((prev) => 'lose');
     
     } else if (player1 === 'paper' && player2 === 'rock') {
-      setPlayerWin('win');
+      setPlayerWin((prev) => 'win');
       setScore((prevScore) => prevScore + 1);
     
     } else if (player1 === 'paper' && player2 === 'scissors') {
-      setPlayerWin('lose');
+      setPlayerWin((prev) => 'lose');
     
     } else if (player1 === 'scissors' && player2 === 'rock') {
-      setPlayerWin('lose');
+      setPlayerWin((prev) => 'lose');
 
     } else if (player1 === 'scissors' && player2 === 'paper') {
-      setPlayerWin('win');
+      setPlayerWin((prev) => 'win');
       setScore((prevScore) => prevScore + 1);
 
     } else {
-      setPlayerWin('draw');
+      setPlayerWin((prev) => 'draw');
     }
   };
 
   return (
       <>
-        <div className="mx-80 my-2 h-auto py-4 px-10 bg-gray-500 rounded-xl">
+        <div className="sm:w-1/2 min-w-5/6 mx-auto my-2 h-auto py-4 px-10 bg-neutral-800 rounded-xl">
           <Header score={score}/>
-          <Play handleOptionClick={handleOptionClick}/>
-          {showResult && <Game/>}
+            {showPlay ? <Play handleOptionClick={handleOptionClick}/> : <Game player1={player1} player2={player2} playerWin={playerWin} handlePlayAgain={handlePlayAgain}/>}
         </div>
       </>
   )
-}
+};
 
 export default App;
